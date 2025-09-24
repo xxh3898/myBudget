@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Budget</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- 헤더 영역: 앱 제목, 현재 잔액 표시 -->
+        <header>
+            <h1>가계부</h1>
+            <p>현재 잔액</p>
+            <span id="balance">985,000원</span>
+        </header>
+
+        <!-- 입력 영역: 내용, 금액, 수입/지출 선택, 추가 버튼 -->
+        <div class="input">
+            <div class="input-content">
+                <input type="text" placeholder="내용을 입력하세요 (예: 점심값, 월급)" id="description">
+                <input type="number" placeholder="금액을 입력하세요" id="amount">
+            </div>
+
+            <div class="btn">
+                <button>수입</button>
+                <button>지출</button>
+            </div>
+
+            <button class="add-btn">추가하기</button>
+        </div>
+        <!-- 필터 영역: 전체/수입/지출 보기 -->
+        <div class="filter">
+            <div class="filter-btn">
+                <button>전체</button>
+                <button data-type="income" id="add-income">수입</button>
+                <button data-type="expense" id="add-expense">지출</button>
+            </div>
+        </div>
+
+        <!-- 요약 영역: 총 수입, 총 지출, 현재 잔액 표시 -->
+        <div class="summary">
+            <section class="present">
+                <div class="income">
+                    <span class="label">총 수입</span>
+                    <span id="total-income">1,000,000원</span>
+                </div>
+
+                <div class="expense">
+                    <span class="label">총 지출</span>
+                    <span id="total-expense">15,000원</span>
+                </div>
+
+                <div class="remaining-balance">
+                    <span class="label">잔액</span>
+                    <span id="total-balance">15,000원</span>
+                </div>
+            </section>
+        </div>
+
+        <!-- 목록 영역: 내역(날짜, 내용, 금액, 타입) + 삭제 버튼 -->
+        <div class="transaction-list">
+            <ul>
+                <li>
+                    <time class="date" datetime="2025-09-24">2025년 9월 24일</time>
+                    <span class="description">급여</span>
+                    <span class="amount">+1,000,000원</span>
+                    <button class="delete-btn">삭제</button>
+                </li>
+                <li>
+                   <time class="date" datetime="2025-09-24">2025년 9월 24일</time>
+                    <span class="description">점심</span>
+                    <span class="amount">-15,000원</span>
+                    <button class="delete-btn">삭제</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
