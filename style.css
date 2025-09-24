@@ -1,0 +1,224 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Noto Sans KR", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+ul {
+    list-style: none;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Noto Sans KR", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-weight: 400;
+    background: linear-gradient(135deg, #F7A5A5, #5D688A);
+    padding: 20px;
+}
+
+button {
+    border: none;
+    outline: none;
+}
+
+button:hover {
+    scale: 0.98;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #FFF2EF;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(255, 245, 245, 0.336);
+}
+
+header {
+    background: linear-gradient(135deg, #F7A5A5, #5D688A);
+    color: white;
+    text-align: center;
+    padding: 30px 0;
+}
+
+header p {
+    font-size: 13px;
+    ;
+}
+
+header span {
+    font-size: 20px;
+    ;
+}
+
+#balance {
+    color: green;
+    font-weight: bold;
+}
+
+.input {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-bottom: 1px solid rgb(224, 224, 224);
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.input input {
+    width: 500px;
+    padding: 20px;
+    border: 2px solid rgb(224, 224, 224);
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.input-content {
+    /* justify-content: space-between; */
+    padding: 20px;
+
+}
+
+.input button {
+    margin-left: 10px;
+    padding: 15px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+#income {
+    border-radius: 30px;
+    background: rgb(88, 143, 5);
+    color: white;
+}
+
+#expense {
+    border-radius: 30px;
+    background: white;
+    color: red;
+}
+
+
+.add-btn {
+    flex: 1;
+    width: 1000px;
+    margin-top: 20px;
+    border-radius: 10px;
+    color: white;
+    background: linear-gradient(135deg, #F7A5A5, #5D688A);
+}
+
+.filter-btn {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    border-bottom: 1px solid rgb(224, 224, 224);
+    gap: 10px;
+}
+
+.filter-btn button {
+    padding: 8px 16px;
+    border: 2px solid rgb(224, 224, 224);
+    background: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.filter-btn button:hover,
+.filter-btn button.active {
+    background: #5D688A;
+    color: white;
+    border-color: #5d688a;
+}
+
+.summary {
+    background: rgb(255, 250, 250);
+    display: flex;
+}
+
+.summary div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+}
+
+#total-income,
+#total-expense,
+#total-balance {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#total-income,
+#total-balance {
+    color: green;
+}
+
+#total-expense {
+    color: red;
+}
+
+.transaction-list li {
+    /* border: 0.01px solid black; */
+    border-bottom: 1px solid rgb(224, 224, 224);
+    display: flex;
+    justify-content: space-between;
+    /* padding: 0 40px 0 40px; */
+    padding: 40px;
+}
+
+.transaction-list div {
+    font-size: 16px;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+}
+
+.right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.right span {
+    margin: 0;
+}
+
+
+.delete-btn {
+    background: red;
+    color: white;
+    margin-left: 10px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.amount {
+    color: green;
+    font-weight: bold;
+}
