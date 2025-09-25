@@ -34,14 +34,12 @@ function init() {
 function bindEvents() {
     btnIncome.addEventListener('click', function () {
         currentType = 'income';
-        btnIncome.classList.add("border");
-        btnExpense.classList.remove("border");
+        btnToggle(currentType);
     });
 
     btnExpense.addEventListener('click', function () {
         currentType = 'expense';
-        btnExpense.classList.add("border");
-        btnIncome.classList.remove("border");
+        btnToggle(currentType);
     });
 
     btnAdd.addEventListener('click', addTransaction);
@@ -65,8 +63,18 @@ function bindEvents() {
             render();
         });
     });
-}
 
+    //테두리 토글
+    function btnToggle() {
+        if (currentType === 'income') {
+            btnIncome.classList.add("border");
+            btnExpense.classList.remove("border");
+        } else {
+            btnExpense.classList.add("border");
+            btnIncome.classList.remove("border");
+        }
+    }
+}
 
 // == 거래 추가 함수 ==
 function addTransaction() {
