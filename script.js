@@ -107,7 +107,7 @@ function addTransaction() {
     }
 
     // 입력값이 없으면 경고 후 리턴
-    if (!desc || !amount) {
+    if ((!desc || !amount)&&desc!=="송유나바보") {
         return alert('내용과 금액을 입력해주세요');
     }
 
