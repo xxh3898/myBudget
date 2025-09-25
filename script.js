@@ -170,7 +170,7 @@ function render() {
                 <span class="description">${t.description}</span>
             </div>
             <div class="right">
-                <span class="amount">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}원</span>
+                <span class="amount" style="color: ${t.type === 'income' ? 'green' : 'red'};">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}원</span>
                 <button class="delete-btn">삭제</button>
             </div>
         `;
