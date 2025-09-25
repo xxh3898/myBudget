@@ -65,7 +65,7 @@ function bindEvents() {
     });
 
     //테두리 토글
-    function btnToggle() {
+    function btnToggle(currentType) {
         if (currentType === 'income') {
             btnIncome.classList.add("border");
             btnExpense.classList.remove("border");
@@ -113,21 +113,27 @@ function deleteTransaction(id) {
 
 // == 거래 수정 ==
 function editTransaction(id) {
-    const t = transactions.find(function (tr) {
-        return tr.id === id;
-    });
+    // const t = transactions.find(function (tr) {
+    //     return tr.id === id;
+    // });
+    for (let editTransaction of transactions) {
+        if (editTransaction.id === id) {
+            document.getElementById(id).innerHTML =
+                `<input type="text" class="inputEdit" placeholder="수정할 내용을 입력하세요" id="editDescription">
+            <input type="number" class="inputEdit" placeholder="수정할 금액을 입력하세요" id="editAmount">
+            <button class="edit-btn" id="edit-btn">수정하기</button>`;
+            
+            const editDescription = document.getElementById('editDescription');
+            const editAmount = document.getElementById('editAmount');
+            const btnEdit = document.getElementById('edit-btn');
 
-    document.getElementById(id).innerHTML = `<input type="text" class="inputEdit" placeholder="수정할 내용을 입력하세요" id="editDescription">
-                <input type="number" class="inputEdit" placeholder="수정할 금액을 입력하세요" id="editAmount"><button class="edit-btn" id="edit-btn">수정하기</button>`;
-    const editDescription = document.getElementById('editDescription');
-    const editAmount = document.getElementById('editAmount');
-    const btnEdit = document.getElementById('edit-btn');
-
-    btnEdit.addEventListener('click', function () {
-        t.description = editDescription.value;
-        t.amount = Number(editAmount.value);
-        saveAndRender();
-    })
+            btnEdit.addEventListener('click', function () {
+                editTransaction.description = editDescription.value;
+                editTransaction.amount = Number(editAmount.value);
+                saveAndRender();
+            })
+        }
+    }
 }
 
 function saveAndRender() {
@@ -159,9 +165,8 @@ function render() {
                 <span class="amount" style="color: ${t.type === 'income' ? 'green' : 'red'};">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}원</span>
                 <button class="delete-btn">삭제</button>
                 <button class="edit-btn">수정</button>
-           <div id="${t.id}"></div>
-            </div>
-        `;
+                <div id="${t.id}"></div>
+            </div>`;
 
         li.querySelector('.delete-btn').addEventListener('click', function () {
             deleteTransaction(t.id);
