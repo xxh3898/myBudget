@@ -105,13 +105,12 @@ function deleteTransaction(id) {
 
 // == 거래 수정 ==
 function editTransaction(id) {
-    //수정하려면 새로운 객체 만들고 내용, 금액 입력 받아야함
     const t = transactions.find(function (tr) {
         return tr.id === id;
     });
 
-    document.getElementById(id).innerHTML = `<input type="text" placeholder="수정할 내용을 입력하세요" id="editDescription">
-                <input type="number" placeholder="수정할 금액을 입력하세요" id="editAmount"><button class="edit-btn" id="edit-btn">수정하기</button>`;
+    document.getElementById(id).innerHTML = `<input type="text" class="inputEdit" placeholder="수정할 내용을 입력하세요" id="editDescription">
+                <input type="number" class="inputEdit" placeholder="수정할 금액을 입력하세요" id="editAmount"><button class="edit-btn" id="edit-btn">수정하기</button>`;
     const editDescription = document.getElementById('editDescription');
     const editAmount = document.getElementById('editAmount');
     const btnEdit = document.getElementById('edit-btn');
