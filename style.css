@@ -222,3 +222,7 @@ header span {
     color: green;
     font-weight: bold;
 }
+
+.border {
+    border: 3px solid black;
+}

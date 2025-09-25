@@ -50,13 +50,20 @@ function init() {
 
 function bindEvents() {
     // [수입 버튼] 클릭하면 현재 타입을 'income'으로 설정
+    // 테두리 변경으로 확인 가능
     btnIncome.addEventListener('click', function () {
         currentType = 'income';
+        btnIncome.classList.add("border");
+        btnExpense.classList.remove("border");
     });
 
     // [지출 버튼] 클릭하면 현재 타입을 'expense'로 설정
+    // 테두리 변경으로 확인 가능
+
     btnExpense.addEventListener('click', function () {
         currentType = 'expense';
+        btnExpense.classList.add("border");
+        btnIncome.classList.remove("border");
     });
 
     // [추가하기 버튼] 클릭하면 거래 추가
@@ -164,6 +171,7 @@ function render() {
         const li = document.createElement('li');
 
         // 리스트 아이템 HTML
+        //잔액에 따라서 색상 변경
         li.innerHTML = `
             <div class="left">
                 <time class="date">${t.date}</time>
@@ -204,6 +212,7 @@ function render() {
     const remain = incomeSum - expenseSum;
 
     // 요약 / 헤더 잔액 모두 업데이트
+    //잔액에 따라서 색상 변경
     totalBalance.textContent = remain.toLocaleString() + '원';
     totalBalance.style.color = remain > 0 ? "green" : "red";
     balance.textContent = remain.toLocaleString() + '원';
