@@ -205,7 +205,9 @@ function render() {
 
     // 요약 / 헤더 잔액 모두 업데이트
     totalBalance.textContent = remain.toLocaleString() + '원';
+    totalBalance.style.color = remain > 0 ? "green" : "red";
     balance.textContent = remain.toLocaleString() + '원';
+    balance.style.color = remain > 0 ? "green" : "red";
 }
 
 
