@@ -100,14 +100,15 @@ function bindEvents() {
 
 function addTransaction() {
     // 입력된 내용과 금액 가져오기
-    const desc = inDescription.value.trim(); // 공백 제거
+    const desc = inDescription.value.replace(/\s/g, ""); //공백제거
     const amount = Number(inAmount.value);   // 숫자로 변환
-    if(desc==="송유나바보"){
-        document.getElementById('yuna').innerHTML='<img src="./yuna-babo.jpg" alt="메롱" width="50%">';
+    //이스터에그
+    if (desc === "송유나바보") {
+        document.getElementById('yuna').innerHTML = '<img src="./yuna-babo.jpg" alt="메롱" width="50%">';
     }
 
     // 입력값이 없으면 경고 후 리턴
-    if ((!desc || !amount)&&desc!=="송유나바보") {
+    if ((!desc || !amount) && desc !== "송유나바보") {
         return alert('내용과 금액을 입력해주세요');
     }
 
