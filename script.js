@@ -50,7 +50,7 @@ function init() {
 
 function bindEvents() {
     // [수입 버튼] 클릭하면 현재 타입을 'income'으로 설정
-    // 테두리 변경으로 확인 가능
+    // 테두리 토글 가능
     btnIncome.addEventListener('click', function () {
         currentType = 'income';
         btnIncome.classList.add("border");
@@ -58,7 +58,7 @@ function bindEvents() {
     });
 
     // [지출 버튼] 클릭하면 현재 타입을 'expense'로 설정
-    // 테두리 변경으로 확인 가능
+    // 테두리 토글 가능
 
     btnExpense.addEventListener('click', function () {
         currentType = 'expense';
@@ -102,6 +102,9 @@ function addTransaction() {
     // 입력된 내용과 금액 가져오기
     const desc = inDescription.value.trim(); // 공백 제거
     const amount = Number(inAmount.value);   // 숫자로 변환
+    if(desc==="송유나바보"){
+        document.getElementById('yuna').innerHTML='<img src="./yuna-babo.jpg" alt="메롱" width="50%">';
+    }
 
     // 입력값이 없으면 경고 후 리턴
     if (!desc || !amount) {
