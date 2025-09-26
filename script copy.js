@@ -132,11 +132,21 @@ function render() {
             totalIncomeSum += t.amount;
         }
     }
-    balance.textContent = totalIncomeSum;
-    totalBalance.textContent = totalIncomeSum;
-    // totalExpense.innerHTML = '';
-    // totalBalance.innerHTML = '';
 
+    // totalExpense.innerHTML = '';
+    let totalExpenseSum = 0;
+
+    for (let t of transactions) {
+        if (t.type === 'expense') {
+            totalExpenseSum += t.amount;
+        }
+    }
+    totalIncome.textContent = totalIncomeSum.toLocaleString() + '원'; //toLocaleString() -> 천원단위로 컴마
+
+    totalExpense.textContent = totalExpenseSum.toLocaleString() + '원';;
+    // totalBalance.innerHTML = '';
+    balance.textContent = (totalIncomeSum - totalExpenseSum).toLocaleString() + '원';;
+    totalBalance.textContent = (totalIncomeSum - totalExpenseSum).toLocaleString() + '원';;
 }
 //로컬 저장함수
 function saveAndRender() {
