@@ -123,17 +123,17 @@ function render() {
     });
 
     //요약부분 해야함
-   
+
     // totalIncome.innerHTML = '';
-    let totalIncomeSum=0;
-    if (currentFilter === 'income') {
-        for (let t of transactions) {
-            t.amount+=totalIncomeSum;
+    let totalIncomeSum = 0;
+
+    for (let t of transactions) {
+        if (t.type === 'income') {
+            totalIncomeSum += t.amount;
         }
-    } 
-     balance.textContent = totalIncomeSum;
-     console.log(totalIncomeSum);
-     
+    }
+    balance.textContent = totalIncomeSum;
+    totalBalance.textContent = totalIncomeSum;
     // totalExpense.innerHTML = '';
     // totalBalance.innerHTML = '';
 
