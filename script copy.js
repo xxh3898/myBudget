@@ -109,20 +109,45 @@ function render() {
 
 
         })
+        li.querySelector('.edit-btn').addEventListener('click', function () {
+            console.log("수정이벤트 호출");
+
+            editTransaction(t.id);
+
+
+        })
     });
 }
+function editTransaction(id) {
+    console.log("수정");
+    document.getElementById(id).innerHTML = `<input type="text" class="inputEdit" placeholder="수정할 내용을 입력하세요" id="editDescription">
+            <input type="number" class="inputEdit" placeholder="수정할 금액을 입력하세요" id="editAmount">
+            <button class="edit-btn" id="edit-btn">수정하기</button>`;
+    const editDescription = document.getElementById('editDescription');
+    const editAmount = document.getElementById('editAmount');
 
+    document.getElementById('edit-btn').addEventListener('click', function () {
+        for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].id === id) {
+                transactions[i].description = editDescription.value;
+                transactions[i].amount = Number(editAmount.value);
+            }
+
+        }
+        render();
+    })
+}
 function deleteTransaction(id) {
     console.log("delete");
     //transactions배열에 지우고자하는 아이디와 같은 객체 빼고 다시 한 바퀴 돌려서 넣기
-    let newTransactions=[]
-    for(let i=0;i<transactions.length;i++){
-        if (transactions[i].id!==id) {
+    let newTransactions = []
+    for (let i = 0; i < transactions.length; i++) {
+        if (transactions[i].id !== id) {
             newTransactions.push(transactions[i]);
         }
     }
-transactions=newTransactions;
-render();
+    transactions = newTransactions;
+    render();
 }
 function getFilteredLists() {
     const filteredLists = [];
