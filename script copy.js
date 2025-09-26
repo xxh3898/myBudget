@@ -46,8 +46,12 @@ function bindEvents() {
         // console.log(currentType);
         addTransaction();
     })
-    //수정버튼
-    //전체버튼
+    //엔터
+    inAmount.addEventListener('keydown',function (e) {
+        if (e.key === 'Enter') {
+            addTransaction();
+        }
+    });
     fAll.addEventListener('click', function () {
         currentFilter = 'all';
         render();
@@ -72,6 +76,12 @@ function addTransaction() {
         amount: Number(inAmount.value),
         type: currentType,
         date: new Date().toLocaleDateString()
+    }
+    const desc = inDescription.value.trim();
+    const amount = Number(inAmount.value);
+    if (!desc || !amount) { //공백 입력시
+        console.log("값이 없습니다.");
+        return;
     }
     transactions.push(transaction);
     render();
@@ -117,6 +127,8 @@ function render() {
 
         })
     });
+
+    //요약부분 해야함
 }
 function editTransaction(id) {
     console.log("수정");
