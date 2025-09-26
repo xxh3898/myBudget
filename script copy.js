@@ -47,24 +47,24 @@ function bindEvents() {
         addTransaction();
     })
     //엔터
-    inAmount.addEventListener('keydown',function (e) {
+    inAmount.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             addTransaction();
         }
     });
     fAll.addEventListener('click', function () {
         currentFilter = 'all';
-        render();
+        saveAndRender();
     })
     //수입버튼
     fIncome.addEventListener('click', function () {
         currentFilter = 'income';
-        render();
+        saveAndRender();
     })
     //지출버튼
     fExpense.addEventListener('click', function () {
         currentFilter = 'expense';
-        render();
+        saveAndRender();
     })
 }
 
@@ -80,11 +80,11 @@ function addTransaction() {
     const desc = inDescription.value.trim();
     const amount = Number(inAmount.value);
     if (!desc || !amount) { //공백 입력시
-        console.log("값이 없습니다.");
+        alert("내용과 금액을 입력해주세요");
         return;
     }
     transactions.push(transaction);
-    render();
+    saveAndRender();
 }
 
 function render() {
@@ -111,6 +111,7 @@ function render() {
         `;
 
         listUl.appendChild(li); // 실제 DOM에 추가 실제 페이지에 보이려면 부모 노드에 붙여줘야 함
+
         // document.getElementById('deleteBtn').addEventListener('click', function () {
         li.querySelector('.delete-btn').addEventListener('click', function () { //document.을 안쓰는 이유는 각각의 li 항목마다 자기 자신 안에 있는 삭제 버튼을 찾고 이벤트를 연결하기 위해
             console.log("삭제이벤트 호출");
@@ -129,6 +130,13 @@ function render() {
     });
 
     //요약부분 해야함
+    
+}
+//로컬 저장함수
+function saveAndRender() {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+
+    render();
 }
 function editTransaction(id) {
     console.log("수정");
@@ -146,7 +154,7 @@ function editTransaction(id) {
             }
 
         }
-        render();
+        saveAndRender();
     })
 }
 function deleteTransaction(id) {
@@ -159,7 +167,7 @@ function deleteTransaction(id) {
         }
     }
     transactions = newTransactions;
-    render();
+    saveAndRender();
 }
 function getFilteredLists() {
     const filteredLists = [];
