@@ -11,9 +11,9 @@ const btnIncome = document.getElementById('income');
 const btnExpense = document.getElementById('expense');
 const btnAdd = document.getElementById('add-btn');
 
-const fAll=document.getElementById('fall');
-const fIncome=document.getElementById('fincome');
-const fExpense=document.getElementById('fexpense');
+const fAll = document.getElementById('fall');
+const fIncome = document.getElementById('fincome');
+const fExpense = document.getElementById('fexpense');
 
 const listUl = document.getElementById('transaction-ul');
 
@@ -68,13 +68,13 @@ function bindEvents() {
 function addTransaction() {
     transaction = {
         id: Date.now(),
-        description: inDescription,
-        amount: inAmount,
+        description: inDescription.value, //value를 가져와야함
+        amount: Number(inAmount.value),
         type: currentType,
-        date: new Date().toLocaleDateString
+        date: new Date().toLocaleDateString()
     }
     transactions.push(transaction);
-
+    render();
 }
 
 function render() {
@@ -82,8 +82,8 @@ function render() {
     listUl.innerHTML = '';
     const filteredLists = getFilteredLists();
     console.log(transactions);
-    let t = function (t) {
-       const li = document.createElement('li');
+    filteredLists.forEach(function (t) { //transactions는 배열(여러 거래 항목)이기 때문에 각 항목마다 HTML 요소(<li>)를 하나씩 만들어서 DOM에 추가하려면 항목들을 하나씩 순회(iterate)해야 함
+        const li = document.createElement('li');
 
         li.innerHTML = `
             <div class="left">
@@ -91,14 +91,38 @@ function render() {
                 <span class="description">${t.description}</span>
             </div>
             <div class="right">
-                <span class="amount" style="color: ${t.type === 'income' ? 'green' : 'red'};">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}원</span>
-                <button class="delete-btn">삭제</button>
-                <button class="edit-btn">수정</button>
+                <span class="amount" style="color: ${t.type === 'income' ? 'green' : 'red'};">
+                    ${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}원
+                </span>
+                <button class="delete-btn" id="deleteBtn">삭제</button>
+                <button class="edit-btn" id="editBtn">수정</button>
                 <div id="${t.id}"></div>
-            </div>`;
-                    listUl.appendChild(li);
+            </div>
+        `;
 
+        listUl.appendChild(li); // 실제 DOM에 추가 실제 페이지에 보이려면 부모 노드에 붙여줘야 함
+        // document.getElementById('deleteBtn').addEventListener('click', function () {
+        li.querySelector('.delete-btn').addEventListener('click', function () { //document.을 안쓰는 이유는 각각의 li 항목마다 자기 자신 안에 있는 삭제 버튼을 찾고 이벤트를 연결하기 위해
+            console.log("삭제이벤트 호출");
+
+            deleteTransaction(t.id);
+
+
+        })
+    });
+}
+
+function deleteTransaction(id) {
+    console.log("delete");
+    //transactions배열에 지우고자하는 아이디와 같은 객체 빼고 다시 한 바퀴 돌려서 넣기
+    let newTransactions=[]
+    for(let i=0;i<transactions.length;i++){
+        if (transactions[i].id!==id) {
+            newTransactions.push(transactions[i]);
+        }
     }
+transactions=newTransactions;
+render();
 }
 function getFilteredLists() {
     const filteredLists = [];
@@ -115,6 +139,7 @@ function getFilteredLists() {
             filteredLists.push(t);
         }
     }
+    return filteredLists; //리턴을 해야함 값을 return하지 않으면 undefined를 반환
 }
 
 document.addEventListener('DOMContentLoaded', init);
