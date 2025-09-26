@@ -32,21 +32,16 @@ function init() {
 
 // == 이벤트 리스너 ==
 function bindEvents() {
-    // 버튼들부터 
-    //수입버튼
     btnIncome.addEventListener('click', function () {
         currentType = 'income';
     })
-    //지출버튼
     btnExpense.addEventListener('click', function () {
         currentType = 'expense';
     })
-    //추가버튼
     btnAdd.addEventListener('click', function () {
         // console.log(currentType);
         addTransaction();
     })
-    //엔터
     inAmount.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             addTransaction();
@@ -56,12 +51,10 @@ function bindEvents() {
         currentFilter = 'all';
         saveAndRender();
     })
-    //수입버튼
     fIncome.addEventListener('click', function () {
         currentFilter = 'income';
         saveAndRender();
     })
-    //지출버튼
     fExpense.addEventListener('click', function () {
         currentFilter = 'expense';
         saveAndRender();
@@ -130,7 +123,20 @@ function render() {
     });
 
     //요약부분 해야함
-    
+   
+    // totalIncome.innerHTML = '';
+    let totalIncomeSum=0;
+    if (currentFilter === 'income') {
+        for (let t of transactions) {
+            t.amount+=totalIncomeSum;
+        }
+    } 
+     balance.textContent = totalIncomeSum;
+     console.log(totalIncomeSum);
+     
+    // totalExpense.innerHTML = '';
+    // totalBalance.innerHTML = '';
+
 }
 //로컬 저장함수
 function saveAndRender() {
@@ -138,6 +144,7 @@ function saveAndRender() {
 
     render();
 }
+
 function editTransaction(id) {
     console.log("수정");
     document.getElementById(id).innerHTML = `<input type="text" class="inputEdit" placeholder="수정할 내용을 입력하세요" id="editDescription">
