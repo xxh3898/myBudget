@@ -11,7 +11,9 @@ const btnIncome = document.getElementById('income');
 const btnExpense = document.getElementById('expense');
 const btnAdd = document.getElementById('add-btn');
 
-const filterBtns = document.querySelectorAll('.filter-btn button');
+const fAll = document.getElementById('fall');
+const fIncome = document.getElementById('fincome');
+const fExpense = document.getElementById('fexpense');
 
 const listUl = document.getElementById('transaction-ul');
 
@@ -28,132 +30,100 @@ function init() {
     render();
 }
 
-
-// == 이벤트 연결 함수 ==
-// todo.테두리 토글 함수로 빼기
+// == 이벤트 리스너 ==
 function bindEvents() {
     btnIncome.addEventListener('click', function () {
         currentType = 'income';
         btnToggle(currentType);
-    });
-
+    })
     btnExpense.addEventListener('click', function () {
         currentType = 'expense';
         btnToggle(currentType);
-    });
 
-    btnAdd.addEventListener('click', addTransaction);
-
+    })
+    btnAdd.addEventListener('click', function () {
+        // console.log(currentType);
+        addTransaction();
+    })
     inAmount.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             addTransaction();
         }
     });
+    fAll.addEventListener('click', function () {
+        currentFilter = 'all';
+        checked(currentFilter);
+        saveAndRender();
+    })
+    fIncome.addEventListener('click', function () {
+        currentFilter = 'income';
+        checked(currentFilter);
+        saveAndRender();
+    })
+    fExpense.addEventListener('click', function () {
+        currentFilter = 'expense';
+        checked(currentFilter);
+        saveAndRender();
+    })
+}
+function btnToggle(currentType) {
+    if (currentType === 'income') {
+        btnIncome.classList.add('border');
+        btnExpense.classList.remove('border');
+        console.log("income");
 
-    filterBtns.forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-            currentFilter = e.target.dataset.filter;
-
-            filterBtns.forEach(function (b) {
-                b.classList.remove('active');
-            });
-
-            e.target.classList.add('active');
-
-            render();
-        });
-    });
-
-    //테두리 토글
-    function btnToggle(currentType) {
-        if (currentType === 'income') {
-            btnIncome.classList.add("border");
-            btnExpense.classList.remove("border");
-        } else {
-            btnExpense.classList.add("border");
-            btnIncome.classList.remove("border");
-        }
+    } else {
+        btnExpense.classList.add('border');
+        btnIncome.classList.remove('border');
+        console.log("expense");
     }
 }
 
-// == 거래 추가 함수 ==
-function addTransaction() {
-    const desc = inDescription.value.trim();
-    const amount = Number(inAmount.value);
-
-    if (!desc || !amount) {
-        return alert('내용과 금액을 입력해주세요');
+function checked(currentFilter){
+if (currentFilter === 'all') {
+        fAll.classList.add('active');
+        fIncome.classList.remove('active');
+        fExpense.classList.remove('active');
+    } else if(currentFilter === 'income'){
+        fAll.classList.remove('active');
+        fIncome.classList.add('active');
+        fExpense.classList.remove('active');
+    } else if(currentFilter === 'expense'){
+        fAll.classList.remove('active');
+        fIncome.classList.remove('active');
+        fExpense.classList.add('active');
     }
+}
 
-    const transaction = {
+//그 전에 값을 입력받아 객체를 만들어야함
+function addTransaction() {
+
+    transaction = {
         id: Date.now(),
-        description: desc,
-        amount: amount,
+        description: inDescription.value, //value를 가져와야함
+        amount: Number(inAmount.value),
         type: currentType,
         date: new Date().toLocaleDateString()
-    };
-
+    }
+    const desc = inDescription.value.trim();
+    const amount = Number(inAmount.value);
+    if (!desc || !amount) { //공백 입력시
+        alert("내용과 금액을 입력해주세요");
+        return;
+    }
     transactions.push(transaction);
-
     saveAndRender();
-
+    console.log("추가 타입:" + transaction.type);
     inDescription.value = '';
     inAmount.value = '';
+
 }
 
-
-// == 거래 삭제 함수 ==
-function deleteTransaction(id) {
-    transactions = transactions.filter(function (t) {
-        return t.id !== id;
-    });
-
-    saveAndRender();
-}
-
-// == 거래 수정 ==
-function editTransaction(id) {
-    // const t = transactions.find(function (tr) {
-    //     return tr.id === id;
-    // });
-    for (let editTransaction of transactions) {
-        if (editTransaction.id === id) {
-            document.getElementById(id).innerHTML =
-                `<input type="text" class="inputEdit" placeholder="수정할 내용을 입력하세요" id="editDescription">
-            <input type="number" class="inputEdit" placeholder="수정할 금액을 입력하세요" id="editAmount">
-            <button class="edit-btn" id="edit-btn">수정하기</button>`;
-            
-            const editDescription = document.getElementById('editDescription');
-            const editAmount = document.getElementById('editAmount');
-            const btnEdit = document.getElementById('edit-btn');
-
-            btnEdit.addEventListener('click', function () {
-                editTransaction.description = editDescription.value;
-                editTransaction.amount = Number(editAmount.value);
-                saveAndRender();
-            })
-        }
-    }
-}
-
-function saveAndRender() {
-    localStorage.setItem('transactions', JSON.stringify(transactions));
-
-    render();
-}
-
-// == 렌더링 함수 ==
 function render() {
+    //ul아래에 li생성
     listUl.innerHTML = '';
-
-    let filtered = transactions;
-    if (currentFilter !== 'all') {
-        filtered = transactions.filter(function (t) {
-            return t.type === currentFilter;
-        });
-    }
-
-    filtered.forEach(function (t) {
+    const filteredLists = getFilteredLists();
+    filteredLists.forEach(function (t) { //transactions는 배열(여러 거래 항목)이기 때문에 각 항목마다 HTML 요소(<li>)를 하나씩 만들어서 DOM에 추가하려면 항목들을 하나씩 순회(iterate)해야 함
         const li = document.createElement('li');
 
         li.innerHTML = `
@@ -162,42 +132,118 @@ function render() {
                 <span class="description">${t.description}</span>
             </div>
             <div class="right">
-                <span class="amount" style="color: ${t.type === 'income' ? 'green' : 'red'};">${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}원</span>
+                <span class="amount" style="color: ${t.type === 'income' ? 'green' : 'red'};">
+                    ${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}원
+                </span>
                 <button class="delete-btn">삭제</button>
                 <button class="edit-btn">수정</button>
                 <div id="${t.id}"></div>
-            </div>`;
+            </div>
+        `;
 
-        li.querySelector('.delete-btn').addEventListener('click', function () {
+        listUl.appendChild(li); // 실제 DOM에 추가 실제 페이지에 보이려면 부모 노드에 붙여줘야 함
+
+        // document.getElementById('deleteBtn').addEventListener('click', function () {
+        li.querySelector('.delete-btn').addEventListener('click', function () { //document.을 안쓰는 이유는 각각의 li 항목마다 자기 자신 안에 있는 삭제 버튼을 찾고 이벤트를 연결하기 위해
+            console.log("삭제이벤트 호출");
+
             deleteTransaction(t.id);
-        });
 
-        //수정
-        li.querySelector('.edit-btn').addEventListener('click', function () {
-            editTransaction(t.id)
+
         })
+        li.querySelector('.edit-btn').addEventListener('click', function () {
+            console.log("수정이벤트 호출");
 
-        listUl.appendChild(li);
+            editTransaction(t.id);
+
+
+        })
     });
 
-    // == 요약 부분 ==
-    const incomeSum = transactions
-        .filter(function (t) { return t.type === 'income'; })
-        .reduce(function (a, c) { return a + c.amount; }, 0);
+    //요약부분 해야함
+    let totalIncomeSum = 0;
 
-    const expenseSum = transactions
-        .filter(function (t) { return t.type === 'expense'; })
-        .reduce(function (a, c) { return a + c.amount; }, 0);
+    for (let t of transactions) {
+        if (t.type === 'income') {
+            totalIncomeSum += t.amount;
+        }
+    }
 
-    totalIncome.textContent = incomeSum.toLocaleString() + '원';
-    totalExpense.textContent = expenseSum.toLocaleString() + '원';
+    let totalExpenseSum = 0;
 
-    const remain = incomeSum - expenseSum;
+    for (let t of transactions) {
+        if (t.type === 'expense') {
+            totalExpenseSum += t.amount;
+        }
+    }
+    totalIncome.textContent = totalIncomeSum.toLocaleString() + '원'; //toLocaleString() -> 천원단위로 컴마
 
-    totalBalance.textContent = remain.toLocaleString() + '원';
-    totalBalance.style.color = remain > 0 ? "green" : "red";
-    balance.textContent = remain.toLocaleString() + '원';
-    balance.style.color = remain > 0 ? "green" : "red";
+    totalExpense.textContent = totalExpenseSum.toLocaleString() + '원';;
+    balance.textContent = (totalIncomeSum - totalExpenseSum).toLocaleString() + '원';;
+    totalBalance.textContent = (totalIncomeSum - totalExpenseSum).toLocaleString() + '원';;
+}
+//로컬 저장함수
+function saveAndRender() {
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+
+    render();
+}
+
+function editTransaction(id) {
+    console.log("수정");
+    document.getElementById(id).innerHTML = `<input type="text" class="inputEdit" placeholder="수정할 내용을 입력하세요" id="editDescription">
+            <input type="number" class="inputEdit" placeholder="수정할 금액을 입력하세요" id="editAmount">
+            <button class="edit-btn" id="edit-btn">수정하기</button>`;
+    const editDescription = document.getElementById('editDescription');
+    const editAmount = document.getElementById('editAmount');
+
+    document.getElementById('edit-btn').addEventListener('click', function () {
+        for (let i = 0; i < transactions.length; i++) {
+            if (transactions[i].id === id) {
+                transactions[i].description = editDescription.value;
+                transactions[i].amount = Number(editAmount.value);
+            }
+
+        }
+        saveAndRender();
+    })
+}
+function deleteTransaction(id) {
+    console.log("delete");
+    //transactions배열에 지우고자하는 아이디와 같은 객체 빼고 다시 한 바퀴 돌려서 넣기
+    let newTransactions = []
+    for (let i = 0; i < transactions.length; i++) {
+        if (transactions[i].id !== id) {
+            newTransactions.push(transactions[i]);
+        }
+    }
+    transactions = newTransactions;
+    saveAndRender();
+}
+function getFilteredLists() {
+    const filteredLists = [];
+    if (currentFilter === 'all') {
+        for (let t of transactions) {
+            filteredLists.push(t);
+        }
+        console.log('전체필터출력');
+    } else if (currentFilter === 'income') {
+        for (let t of transactions) {
+            if (t.type == 'income') {
+                filteredLists.push(t)
+            }
+        }
+        console.log('수입필터출력');
+    } else if (currentFilter === 'expense') {
+        for (let t of transactions) {
+            if (t.type == 'expense') {
+                filteredLists.push(t)
+            }
+        }
+        console.log('지출필터출력');
+    }
+
+    return filteredLists; //리턴을 해야함 값을 return하지 않으면 undefined를 반환
 }
 
 document.addEventListener('DOMContentLoaded', init);
