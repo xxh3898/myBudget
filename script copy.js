@@ -34,9 +34,12 @@ function init() {
 function bindEvents() {
     btnIncome.addEventListener('click', function () {
         currentType = 'income';
+        btnToggle(currentType);
     })
     btnExpense.addEventListener('click', function () {
         currentType = 'expense';
+        btnToggle(currentType);
+
     })
     btnAdd.addEventListener('click', function () {
         // console.log(currentType);
@@ -60,7 +63,18 @@ function bindEvents() {
         saveAndRender();
     })
 }
-
+function btnToggle(currentType) {
+    if (currentType === 'income') {
+        btnIncome.classList.add('border');
+        btnExpense.classList.remove('border');
+        console.log("income");
+        
+    } else {
+        btnExpense.classList.add('border');
+        btnIncome.classList.remove('border');
+        console.log("expense");
+    }
+}
 //그 전에 값을 입력받아 객체를 만들어야함
 function addTransaction() {
     transaction = {
