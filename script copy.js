@@ -52,14 +52,17 @@ function bindEvents() {
     });
     fAll.addEventListener('click', function () {
         currentFilter = 'all';
+        checked(currentFilter);
         saveAndRender();
     })
     fIncome.addEventListener('click', function () {
         currentFilter = 'income';
+        checked(currentFilter);
         saveAndRender();
     })
     fExpense.addEventListener('click', function () {
         currentFilter = 'expense';
+        checked(currentFilter);
         saveAndRender();
     })
 }
@@ -75,6 +78,23 @@ function btnToggle(currentType) {
         console.log("expense");
     }
 }
+
+function checked(currentFilter){
+if (currentFilter === 'all') {
+        fAll.classList.add('active');
+        fIncome.classList.remove('active');
+        fExpense.classList.remove('active');
+    } else if(currentFilter === 'income'){
+        fAll.classList.remove('active');
+        fIncome.classList.add('active');
+        fExpense.classList.remove('active');
+    } else if(currentFilter === 'expense'){
+        fAll.classList.remove('active');
+        fIncome.classList.remove('active');
+        fExpense.classList.add('active');
+    }
+}
+
 //그 전에 값을 입력받아 객체를 만들어야함
 function addTransaction() {
 
@@ -94,8 +114,8 @@ function addTransaction() {
     transactions.push(transaction);
     saveAndRender();
     console.log("추가 타입:" + transaction.type);
-        inDescription.value='';
-inAmount.value='';
+    inDescription.value = '';
+    inAmount.value = '';
 
 }
 
