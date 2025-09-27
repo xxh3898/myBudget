@@ -68,7 +68,7 @@ function btnToggle(currentType) {
         btnIncome.classList.add('border');
         btnExpense.classList.remove('border');
         console.log("income");
-        
+
     } else {
         btnExpense.classList.add('border');
         btnIncome.classList.remove('border');
@@ -92,13 +92,14 @@ function addTransaction() {
     }
     transactions.push(transaction);
     saveAndRender();
+    console.log("추가 타입:" + transaction.type);
+
 }
 
 function render() {
     //ul아래에 li생성
     listUl.innerHTML = '';
     const filteredLists = getFilteredLists();
-    console.log(transactions);
     filteredLists.forEach(function (t) { //transactions는 배열(여러 거래 항목)이기 때문에 각 항목마다 HTML 요소(<li>)를 하나씩 만들어서 DOM에 추가하려면 항목들을 하나씩 순회(iterate)해야 함
         const li = document.createElement('li');
 
@@ -111,13 +112,15 @@ function render() {
                 <span class="amount" style="color: ${t.type === 'income' ? 'green' : 'red'};">
                     ${t.type === 'income' ? '+' : '-'}${t.amount.toLocaleString()}원
                 </span>
-                <button class="delete-btn" id="deleteBtn">삭제</button>
-                <button class="edit-btn" id="editBtn">수정</button>
+                <button class="delete-btn">삭제</button>
+                <button class="edit-btn">수정</button>
                 <div id="${t.id}"></div>
             </div>
         `;
 
         listUl.appendChild(li); // 실제 DOM에 추가 실제 페이지에 보이려면 부모 노드에 붙여줘야 함
+        console.log("type:" + t.type);
+
 
         // document.getElementById('deleteBtn').addEventListener('click', function () {
         li.querySelector('.delete-btn').addEventListener('click', function () { //document.을 안쓰는 이유는 각각의 li 항목마다 자기 자신 안에 있는 삭제 버튼을 찾고 이벤트를 연결하기 위해
@@ -137,8 +140,6 @@ function render() {
     });
 
     //요약부분 해야함
-
-    // totalIncome.innerHTML = '';
     let totalIncomeSum = 0;
 
     for (let t of transactions) {
@@ -147,7 +148,6 @@ function render() {
         }
     }
 
-    // totalExpense.innerHTML = '';
     let totalExpenseSum = 0;
 
     for (let t of transactions) {
@@ -158,7 +158,6 @@ function render() {
     totalIncome.textContent = totalIncomeSum.toLocaleString() + '원'; //toLocaleString() -> 천원단위로 컴마
 
     totalExpense.textContent = totalExpenseSum.toLocaleString() + '원';;
-    // totalBalance.innerHTML = '';
     balance.textContent = (totalIncomeSum - totalExpenseSum).toLocaleString() + '원';;
     totalBalance.textContent = (totalIncomeSum - totalExpenseSum).toLocaleString() + '원';;
 }
@@ -206,15 +205,23 @@ function getFilteredLists() {
         for (let t of transactions) {
             filteredLists.push(t);
         }
+        console.log('전체필터출력');
     } else if (currentFilter === 'income') {
         for (let t of transactions) {
-            filteredLists.push(t);
+            if (t.type == 'income') {
+                filteredLists.push(t)
+            }
         }
+        console.log('수입필터출력');
     } else if (currentFilter === 'expense') {
         for (let t of transactions) {
-            filteredLists.push(t);
+            if (t.type == 'expense') {
+                filteredLists.push(t)
+            }
         }
+        console.log('지출필터출력');
     }
+
     return filteredLists; //리턴을 해야함 값을 return하지 않으면 undefined를 반환
 }
 
