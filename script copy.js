@@ -77,6 +77,7 @@ function btnToggle(currentType) {
 }
 //그 전에 값을 입력받아 객체를 만들어야함
 function addTransaction() {
+
     transaction = {
         id: Date.now(),
         description: inDescription.value, //value를 가져와야함
@@ -93,6 +94,8 @@ function addTransaction() {
     transactions.push(transaction);
     saveAndRender();
     console.log("추가 타입:" + transaction.type);
+        inDescription.value='';
+inAmount.value='';
 
 }
 
